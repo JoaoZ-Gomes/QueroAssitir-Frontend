@@ -11,6 +11,7 @@ import {
   Play,
   ChevronRight,
   Clapperboard,
+  X,
 } from 'lucide-react';
 import type { Mood, Context, Duration, RecommendationResult, Movie } from '../data/movies';
 import { getRecommendation, saveToHistory, moodConfig } from '../data/movies';
@@ -125,6 +126,176 @@ function AlternativeCard({
   );
 }
 
+// Mapear nomes de plataformas do backend para emojis/ícones
+const PLATFORM_CONFIG: Record<string, { emoji: string; color: string }> = {
+  netflix: { emoji: '🎬', color: '#E50914' },
+  'amazon prime': { emoji: '📺', color: '#146EB4' },
+  'amazon prime video': { emoji: '📺', color: '#146EB4' },
+  'disney+': { emoji: '✨', color: '#113CCF' },
+  disney: { emoji: '✨', color: '#113CCF' },
+  'max (hbo)': { emoji: '🎭', color: '#001EE8' },
+  hbo: { emoji: '🎭', color: '#001EE8' },
+  'paramount+': { emoji: '⭐', color: '#0064FF' },
+  paramount: { emoji: '⭐', color: '#0064FF' },
+  'apple tv+': { emoji: '🍎', color: '#000000' },
+  apple: { emoji: '🍎', color: '#000000' },
+};
+
+function WatchProvidersModal({
+  movieTitle,
+  platforms,
+  isOpen,
+  onClose,
+}: {
+  movieTitle: string;
+  platforms: string[];
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 flex items-center justify-center z-50 p-4"
+          >
+            <div
+              className="w-full max-w-md rounded-2xl p-6"
+              style={{
+                backgroundColor: '#1a1a1a',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8)',
+              }}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 style={{ color: '#fff', fontWeight: 700, fontSize: 18, marginBottom: 4 }}>
+                    Onde assistir
+                  </h3>
+                  <p style={{ color: '#a1a1aa', fontSize: 13 }} className="truncate">
+                    {movieTitle}
+                  </p>
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onClose}
+                  className="p-2 rounded-lg flex-shrink-0"
+                  style={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    color: '#a1a1aa',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <X size={18} />
+                </motion.button>
+              </div>
+
+              {/* Platforms List */}
+              {platforms.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    {platforms.map((platform, idx) => {
+                      const config = PLATFORM_CONFIG[platform.toLowerCase()];
+                      const emoji = config?.emoji || '📺';
+                      const color = config?.color || '#7c3aed';
+
+                      return (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: idx * 0.05 }}
+                          className="p-4 rounded-xl border-2"
+                          style={{
+                            backgroundColor: `${color}20`,
+                            borderColor: color,
+                          }}
+                        >
+                          <div className="text-center">
+                            <span style={{ fontSize: 24 }}>{emoji}</span>
+                            <p
+                              style={{
+                                color: color,
+                                fontWeight: 600,
+                                fontSize: 13,
+                                marginTop: 4,
+                              }}
+                            >
+                              {platform}
+                            </p>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Info */}
+                  <div
+                    className="p-4 rounded-xl text-center mb-6"
+                    style={{
+                      backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                      border: '1px solid rgba(139, 92, 246, 0.2)',
+                    }}
+                  >
+                    <p style={{ color: '#c4b5fd', fontSize: 13, lineHeight: 1.6 }}>
+                      Filme disponível em {platforms.length} plataforma{platforms.length !== 1 ? 's' : ''}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <div
+                  className="p-6 rounded-xl text-center mb-6"
+                  style={{
+                    backgroundColor: 'rgba(255, 68, 68, 0.1)',
+                    border: '1px solid rgba(255, 68, 68, 0.2)',
+                  }}
+                >
+                  <p style={{ color: '#ff8888', fontSize: 13, lineHeight: 1.6 }}>
+                    Filme não disponível em plataformas de streaming no Brasil no momento
+                  </p>
+                </div>
+              )}
+
+              {/* Close button */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onClose}
+                className="w-full px-4 py-3 rounded-xl"
+                style={{
+                  background: 'linear-gradient(135deg, #7c3aed, #c026d3)',
+                  color: '#fff',
+                  border: 'none',
+                  fontWeight: 600,
+                  fontSize: 14,
+                  cursor: 'pointer',
+                }}
+              >
+                Fechar
+              </motion.button>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
 function AnalyzingScreen() {
   return (
     <div
@@ -193,6 +364,7 @@ export function Results() {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState<RecommendationResult | null>(null);
   const [saved, setSaved] = useState(false);
+  const [showWatchModal, setShowWatchModal] = useState(false);
 
   const state = location.state as {
     query: string;
@@ -250,324 +422,336 @@ export function Results() {
   const moodCfg = state ? moodConfig[state.mood] : null;
 
   return (
-    <AnimatePresence mode="wait">
-      {loading ? (
-        <motion.div key="loading" exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-          <AnalyzingScreen />
-        </motion.div>
-      ) : result ? (
-        <motion.main
-          key="results"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          className="min-h-screen pb-20"
-          style={{ backgroundColor: '#0f0f0f' }}
-        >
-          <div
-            className="fixed inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 60%)',
-            }}
-          />
-
-          <div className="relative max-w-5xl mx-auto px-4 sm:px-6 pt-8">
-            {/* Navigation row */}
-            <motion.div
-              initial={{ opacity: 0, x: -16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="flex items-center justify-between mb-8"
-            >
-              <button
-                onClick={() => navigate('/')}
-                className="flex items-center gap-2 text-sm group"
-                style={{ color: '#71717a' }}
-              >
-                <ArrowLeft
-                  size={16}
-                  className="group-hover:-translate-x-1 transition-transform duration-200"
-                />
-                Nova busca
-              </button>
-
-              {state.query && (
-                <div
-                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full max-w-xs"
-                  style={{
-                    backgroundColor: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,255,255,0.07)',
-                    color: '#71717a',
-                    fontSize: 12,
-                  }}
-                >
-                  <span
-                    className="truncate max-w-[200px]"
-                    style={{ fontStyle: 'italic' }}
-                  >
-                    "{state.query}"
-                  </span>
-                </div>
-              )}
-
-              {moodCfg && (
-                <div
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-                  style={{
-                    backgroundColor: 'rgba(139, 92, 246, 0.12)',
-                    border: '1px solid rgba(139, 92, 246, 0.25)',
-                    color: '#c4b5fd',
-                    fontWeight: 500,
-                    fontSize: 12,
-                  }}
-                >
-                  <span>{moodCfg.emoji}</span>
-                  <span>{moodCfg.label}</span>
-                </div>
-              )}
-            </motion.div>
-
-            {/* Match banner */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="flex items-center gap-2 mb-6"
-            >
-              <Sparkles size={14} style={{ color: '#a78bfa' }} />
-              <span style={{ color: '#71717a', fontSize: 14 }}>
-                Encontramos o filme ideal para o seu momento
-              </span>
-            </motion.div>
-
-            {/* Main movie card */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="rounded-3xl overflow-hidden mb-12"
+    <>
+      <WatchProvidersModal
+        movieTitle={result?.primary.title || ''}
+        platforms={result?.primary.platforms || []}
+        isOpen={showWatchModal}
+        onClose={() => setShowWatchModal(false)}
+      />
+      <AnimatePresence mode="wait">
+        {loading ? (
+          <motion.div key="loading" exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+            <AnalyzingScreen />
+          </motion.div>
+        ) : result ? (
+          <motion.main
+            key="results"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="min-h-screen pb-20"
+            style={{ backgroundColor: '#0f0f0f' }}
+          >
+            <div
+              className="fixed inset-0 pointer-events-none"
               style={{
-                backgroundColor: '#141414',
-                border: '1px solid rgba(255,255,255,0.07)',
-                boxShadow: '0 40px 80px rgba(0,0,0,0.6)',
+                background:
+                  'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 60%)',
               }}
-            >
-              <div className="flex flex-col lg:flex-row">
-                {/* Poster */}
-                <div className="relative lg:w-72 xl:w-80 flex-shrink-0">
-                  <div
-                    className="relative overflow-hidden"
-                    style={{ aspectRatio: '2/3', minHeight: 260 }}
-                  >
-                    <img
-                      src={result.primary.image}
-                      alt={result.primary.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div
-                      className="absolute inset-0 lg:hidden"
-                      style={{
-                        background: 'linear-gradient(to top, #141414 0%, transparent 50%)',
-                      }}
-                    />
-                    <div
-                      className="absolute inset-0 hidden lg:block"
-                      style={{
-                        background: 'linear-gradient(to right, transparent 60%, #141414 100%)',
-                      }}
-                    />
-                  </div>
-                </div>
+            />
 
-                {/* Info */}
-                <div className="flex-1 p-6 lg:p-8 xl:p-10 flex flex-col gap-5">
-                  {/* Genres */}
-                  <div className="flex flex-wrap gap-2">
-                    {result.primary.genres.map((g) => (
-                      <span
-                        key={g}
-                        className="px-2.5 py-1 rounded-full"
+            <div className="relative max-w-5xl mx-auto px-4 sm:px-6 pt-8">
+              {/* Navigation row */}
+              <motion.div
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4 }}
+                className="flex items-center justify-between mb-8"
+              >
+                <button
+                  onClick={() => navigate('/')}
+                  className="flex items-center gap-2 text-sm group"
+                  style={{ color: '#71717a' }}
+                >
+                  <ArrowLeft
+                    size={16}
+                    className="group-hover:-translate-x-1 transition-transform duration-200"
+                  />
+                  Nova busca
+                </button>
+
+                {state.query && (
+                  <div
+                    className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full max-w-xs"
+                    style={{
+                      backgroundColor: 'rgba(255,255,255,0.04)',
+                      border: '1px solid rgba(255,255,255,0.07)',
+                      color: '#71717a',
+                      fontSize: 12,
+                    }}
+                  >
+                    <span
+                      className="truncate max-w-[200px]"
+                      style={{ fontStyle: 'italic' }}
+                    >
+                      "{state.query}"
+                    </span>
+                  </div>
+                )}
+
+                {moodCfg && (
+                  <div
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
+                    style={{
+                      backgroundColor: 'rgba(139, 92, 246, 0.12)',
+                      border: '1px solid rgba(139, 92, 246, 0.25)',
+                      color: '#c4b5fd',
+                      fontWeight: 500,
+                      fontSize: 12,
+                    }}
+                  >
+                    <span>{moodCfg.emoji}</span>
+                    <span>{moodCfg.label}</span>
+                  </div>
+                )}
+              </motion.div>
+
+              {/* Match banner */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.5 }}
+                className="flex items-center gap-2 mb-6"
+              >
+                <Sparkles size={14} style={{ color: '#a78bfa' }} />
+                <span style={{ color: '#71717a', fontSize: 14 }}>
+                  Encontramos o filme ideal para o seu momento
+                </span>
+              </motion.div>
+
+              {/* Main movie card */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="rounded-3xl overflow-hidden mb-12"
+                style={{
+                  backgroundColor: '#141414',
+                  border: '1px solid rgba(255,255,255,0.07)',
+                  boxShadow: '0 40px 80px rgba(0,0,0,0.6)',
+                }}
+              >
+                <div className="flex flex-col lg:flex-row">
+                  {/* Poster */}
+                  <div className="relative lg:w-72 xl:w-80 flex-shrink-0">
+                    <div
+                      className="relative overflow-hidden"
+                      style={{ aspectRatio: '2/3', minHeight: 260 }}
+                    >
+                      <img
+                        src={result.primary.image}
+                        alt={result.primary.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div
+                        className="absolute inset-0 lg:hidden"
                         style={{
-                          backgroundColor: 'rgba(139, 92, 246, 0.15)',
-                          color: '#c4b5fd',
-                          border: '1px solid rgba(139, 92, 246, 0.25)',
-                          fontWeight: 500,
-                          fontSize: 12,
+                          background: 'linear-gradient(to top, #141414 0%, transparent 50%)',
+                        }}
+                      />
+                      <div
+                        className="absolute inset-0 hidden lg:block"
+                        style={{
+                          background: 'linear-gradient(to right, transparent 60%, #141414 100%)',
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 p-6 lg:p-8 xl:p-10 flex flex-col gap-5">
+                    {/* Genres */}
+                    <div className="flex flex-wrap gap-2">
+                      {result.primary.genres.map((g) => (
+                        <span
+                          key={g}
+                          className="px-2.5 py-1 rounded-full"
+                          style={{
+                            backgroundColor: 'rgba(139, 92, 246, 0.15)',
+                            color: '#c4b5fd',
+                            border: '1px solid rgba(139, 92, 246, 0.25)',
+                            fontWeight: 500,
+                            fontSize: 12,
+                          }}
+                        >
+                          {g}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Title + director */}
+                    <div>
+                      <h2
+                        style={{
+                          fontWeight: 800,
+                          color: '#ffffff',
+                          letterSpacing: '-0.02em',
+                          lineHeight: 1.15,
+                          fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
+                          marginBottom: 6,
                         }}
                       >
-                        {g}
-                      </span>
+                        {result.primary.title}
+                      </h2>
+                      <p style={{ color: '#52525b', fontSize: 13 }}>
+                        Dirigido por {result.primary.director}
+                      </p>
+                    </div>
+
+                    {/* Meta */}
+                    <div className="flex flex-wrap items-center gap-4">
+                      <StarRating rating={result.primary.rating} />
+                      <div className="flex items-center gap-1.5">
+                        <Clock size={13} style={{ color: '#52525b' }} />
+                        <span style={{ color: '#71717a', fontSize: 14 }}>
+                          {result.primary.duration}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Calendar size={13} style={{ color: '#52525b' }} />
+                        <span style={{ color: '#71717a', fontSize: 14 }}>
+                          {result.primary.year}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <p
+                      style={{
+                        color: '#a1a1aa',
+                        fontSize: 14,
+                        lineHeight: 1.75,
+                      }}
+                    >
+                      {result.primary.description}
+                    </p>
+
+                    {/* Match reason */}
+                    <div
+                      className="rounded-2xl p-4 flex gap-3"
+                      style={{
+                        backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                        border: '1px solid rgba(124, 58, 237, 0.2)',
+                      }}
+                    >
+                      <Sparkles
+                        size={16}
+                        className="flex-shrink-0"
+                        style={{ color: '#a78bfa', marginTop: 2 }}
+                      />
+                      <div>
+                        <p
+                          className="uppercase tracking-wider mb-1"
+                          style={{ color: '#7c3aed', fontWeight: 600, fontSize: 11 }}
+                        >
+                          Por que este filme?
+                        </p>
+                        <p style={{ color: '#c4b5fd', fontSize: 13, lineHeight: 1.7 }}>
+                          {result.matchReason}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex flex-wrap gap-3">
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => setShowWatchModal(true)}
+                        className="flex items-center gap-2 px-5 py-3 rounded-xl"
+                        style={{
+                          background: 'linear-gradient(135deg, #7c3aed, #c026d3)',
+                          color: '#fff',
+                          fontWeight: 600,
+                          fontSize: 14,
+                          boxShadow: '0 4px 20px rgba(124, 58, 237, 0.35)',
+                          border: 'none',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <Play size={14} fill="white" />
+                        Onde assistir
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => setSaved(!saved)}
+                        className="flex items-center gap-2 px-5 py-3 rounded-xl transition-all"
+                        style={{
+                          backgroundColor: saved ? 'rgba(139, 92, 246, 0.2)' : 'rgba(255,255,255,0.05)',
+                          border: saved
+                            ? '1px solid rgba(139, 92, 246, 0.4)'
+                            : '1px solid rgba(255,255,255,0.08)',
+                          color: saved ? '#c4b5fd' : '#71717a',
+                          fontWeight: 500,
+                          fontSize: 14,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <Bookmark size={14} fill={saved ? 'currentColor' : 'none'} />
+                        {saved ? 'Salvo' : 'Salvar'}
+                      </motion.button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Alternatives */}
+              {result.alternatives.length > 0 && (
+                <div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.4 }}
+                    className="flex items-center justify-between mb-5"
+                  >
+                    <div>
+                      <h3 style={{ color: '#ffffff', fontWeight: 600, fontSize: 16, marginBottom: 2 }}>
+                        Outras sugestões
+                      </h3>
+                      <p style={{ color: '#52525b', fontSize: 12 }}>
+                        Mais opções para o seu humor {moodCfg?.emoji}
+                      </p>
+                    </div>
+                    <Link
+                      to="/"
+                      className="flex items-center gap-1"
+                      style={{ color: '#7c3aed', fontSize: 12 }}
+                    >
+                      Ver mais
+                      <ChevronRight size={12} />
+                    </Link>
+                  </motion.div>
+
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    {result.alternatives.map((movie, i) => (
+                      <AlternativeCard key={movie.id} movie={movie} index={i} />
                     ))}
                   </div>
-
-                  {/* Title + director */}
-                  <div>
-                    <h2
-                      style={{
-                        fontWeight: 800,
-                        color: '#ffffff',
-                        letterSpacing: '-0.02em',
-                        lineHeight: 1.15,
-                        fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
-                        marginBottom: 6,
-                      }}
-                    >
-                      {result.primary.title}
-                    </h2>
-                    <p style={{ color: '#52525b', fontSize: 13 }}>
-                      Dirigido por {result.primary.director}
-                    </p>
-                  </div>
-
-                  {/* Meta */}
-                  <div className="flex flex-wrap items-center gap-4">
-                    <StarRating rating={result.primary.rating} />
-                    <div className="flex items-center gap-1.5">
-                      <Clock size={13} style={{ color: '#52525b' }} />
-                      <span style={{ color: '#71717a', fontSize: 14 }}>
-                        {result.primary.duration}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <Calendar size={13} style={{ color: '#52525b' }} />
-                      <span style={{ color: '#71717a', fontSize: 14 }}>
-                        {result.primary.year}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Description */}
-                  <p
-                    style={{
-                      color: '#a1a1aa',
-                      fontSize: 14,
-                      lineHeight: 1.75,
-                    }}
-                  >
-                    {result.primary.description}
-                  </p>
-
-                  {/* Match reason */}
-                  <div
-                    className="rounded-2xl p-4 flex gap-3"
-                    style={{
-                      backgroundColor: 'rgba(124, 58, 237, 0.1)',
-                      border: '1px solid rgba(124, 58, 237, 0.2)',
-                    }}
-                  >
-                    <Sparkles
-                      size={16}
-                      className="flex-shrink-0"
-                      style={{ color: '#a78bfa', marginTop: 2 }}
-                    />
-                    <div>
-                      <p
-                        className="uppercase tracking-wider mb-1"
-                        style={{ color: '#7c3aed', fontWeight: 600, fontSize: 11 }}
-                      >
-                        Por que este filme?
-                      </p>
-                      <p style={{ color: '#c4b5fd', fontSize: 13, lineHeight: 1.7 }}>
-                        {result.matchReason}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex flex-wrap gap-3">
-                    <motion.button
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="flex items-center gap-2 px-5 py-3 rounded-xl"
-                      style={{
-                        background: 'linear-gradient(135deg, #7c3aed, #c026d3)',
-                        color: '#fff',
-                        fontWeight: 600,
-                        fontSize: 14,
-                        boxShadow: '0 4px 20px rgba(124, 58, 237, 0.35)',
-                      }}
-                    >
-                      <Play size={14} fill="white" />
-                      Onde assistir
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => setSaved(!saved)}
-                      className="flex items-center gap-2 px-5 py-3 rounded-xl transition-all"
-                      style={{
-                        backgroundColor: saved ? 'rgba(139, 92, 246, 0.2)' : 'rgba(255,255,255,0.05)',
-                        border: saved
-                          ? '1px solid rgba(139, 92, 246, 0.4)'
-                          : '1px solid rgba(255,255,255,0.08)',
-                        color: saved ? '#c4b5fd' : '#71717a',
-                        fontWeight: 500,
-                        fontSize: 14,
-                      }}
-                    >
-                      <Bookmark size={14} fill={saved ? 'currentColor' : 'none'} />
-                      {saved ? 'Salvo' : 'Salvar'}
-                    </motion.button>
-                  </div>
                 </div>
-              </div>
-            </motion.div>
+              )}
 
-            {/* Alternatives */}
-            {result.alternatives.length > 0 && (
-              <div>
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.4 }}
-                  className="flex items-center justify-between mb-5"
-                >
-                  <div>
-                    <h3 style={{ color: '#ffffff', fontWeight: 600, fontSize: 16, marginBottom: 2 }}>
-                      Outras sugestões
-                    </h3>
-                    <p style={{ color: '#52525b', fontSize: 12 }}>
-                      Mais opções para o seu humor {moodCfg?.emoji}
-                    </p>
-                  </div>
-                  <Link
-                    to="/"
-                    className="flex items-center gap-1"
-                    style={{ color: '#7c3aed', fontSize: 12 }}
-                  >
-                    Ver mais
-                    <ChevronRight size={12} />
-                  </Link>
-                </motion.div>
-
-                <div className="flex flex-col sm:flex-row gap-4">
-                  {result.alternatives.map((movie, i) => (
-                    <AlternativeCard key={movie.id} movie={movie} index={i} />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Try again */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.9, duration: 0.4 }}
-              className="mt-12 flex justify-center"
-            >
-              <button
-                onClick={() => navigate('/')}
-                className="flex items-center gap-2 transition-colors"
-                style={{ color: '#52525b', fontSize: 14 }}
+              {/* Try again */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9, duration: 0.4 }}
+                className="mt-12 flex justify-center"
               >
-                <ArrowLeft size={14} />
-                Buscar com outro humor
-              </button>
-            </motion.div>
-          </div>
-        </motion.main>
-      ) : null}
-    </AnimatePresence>
+                <button
+                  onClick={() => navigate('/')}
+                  className="flex items-center gap-2 transition-colors"
+                  style={{ color: '#52525b', fontSize: 14, border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }}
+                >
+                  <ArrowLeft size={14} />
+                  Buscar com outro humor
+                </button>
+              </motion.div>
+            </div>
+          </motion.main>
+        ) : null}
+      </AnimatePresence>
+    </>
   );
 }

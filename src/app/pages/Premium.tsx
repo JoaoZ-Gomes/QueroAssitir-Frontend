@@ -1,48 +1,37 @@
 import { motion } from 'motion/react';
-import { Sparkles, Check, Zap, Brain, Infinity, Star } from 'lucide-react';
-
-const features = [
-  {
-    icon: Brain,
-    title: 'IA Avançada de Humor',
-    desc: 'Análise profunda do seu humor com mais de 50 variáveis emocionais para recomendações ultra-precisas.',
-  },
-  {
-    icon: Infinity,
-    title: 'Histórico Ilimitado',
-    desc: 'Acesse todo o seu histórico de buscas e favoritos sem limite de armazenamento.',
-  },
-  {
-    icon: Zap,
-    title: 'Recomendações Instantâneas',
-    desc: 'Sem espera. Resultados em tempo real com base no seu perfil emocional personalizado.',
-  },
-  {
-    icon: Star,
-    title: 'Catálogo Premium',
-    desc: 'Acesso a mais de 5.000 filmes, incluindo títulos exclusivos e raridades do cinema mundial.',
-  },
-];
-
-const plans = [
-  {
-    name: 'Mensal',
-    price: 'R$ 12',
-    period: '/mês',
-    desc: 'Perfeito para experimentar',
-    highlight: false,
-  },
-  {
-    name: 'Anual',
-    price: 'R$ 89',
-    period: '/ano',
-    desc: 'Economize 38%',
-    highlight: true,
-    badge: 'Mais popular',
-  },
-];
+import { Heart, Copy, Check } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 export function Premium() {
+  const qrRef = useRef(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!qrRef.current) return;
+
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+    script.onload = () => {
+      qrRef.current.innerHTML = '';
+      new window.QRCode(qrRef.current, {
+        text: '(75) 99184-1847',
+        width: 172,
+        height: 172,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: window.QRCode.CorrectLevel.H,
+      });
+    };
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
+
+  function copyKey() {
+    navigator.clipboard.writeText('(75) 99184-1847').catch(() => {});
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2200);
+  }
+
   return (
     <main
       className="min-h-screen pb-20 overflow-hidden"
@@ -52,11 +41,11 @@ export function Premium() {
         className="fixed inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(124, 58, 237, 0.12) 0%, transparent 70%)',
+            'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(249, 115, 22, 0.1) 0%, transparent 70%)',
         }}
       />
 
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-14 flex flex-col items-center gap-16">
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-14 flex flex-col items-center gap-10">
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -67,13 +56,13 @@ export function Premium() {
           <div
             className="flex items-center gap-2 px-4 py-2 rounded-full"
             style={{
-              background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(192, 38, 211, 0.2))',
-              border: '1px solid rgba(167, 139, 250, 0.3)',
+              background: 'rgba(249, 115, 22, 0.12)',
+              border: '1px solid rgba(249, 115, 22, 0.3)',
             }}
           >
-            <Sparkles size={14} style={{ color: '#a78bfa' }} />
-            <span style={{ color: '#c4b5fd', fontSize: 13, fontWeight: 500 }}>
-              QueroAssistir Premium
+            <Heart size={14} style={{ color: '#f97316' }} />
+            <span style={{ color: '#fdba74', fontSize: 13, fontWeight: 500 }}>
+              Quero Assistir · Apoie o criador
             </span>
           </div>
 
@@ -86,149 +75,117 @@ export function Premium() {
               fontSize: 'clamp(1.8rem, 5vw, 3rem)',
             }}
           >
-            Cinema feito para{' '}
+            Esse app é feito{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg, #a78bfa 0%, #e879f9 60%, #f472b6 100%)',
+                background: 'linear-gradient(135deg, #f97316 0%, #fb923c 60%, #fbbf24 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
               }}
             >
-              o seu eu
+              com amor
             </span>
           </h1>
           <p style={{ color: '#71717a', fontSize: 15, lineHeight: 1.7, maxWidth: 380 }}>
-            Desbloqueie uma experiência de recomendação ainda mais personalizada e precisa.
+            Se você curte e quer ajudar a manter o projeto vivo, qualquer valor via Pix já faz
+            diferença!
           </p>
         </motion.div>
 
-        {/* Plans */}
-        <div className="w-full flex flex-col sm:flex-row gap-4 justify-center">
-          {plans.map((plan, i) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
-              className="relative flex-1 max-w-xs rounded-3xl p-6 flex flex-col gap-4"
-              style={{
-                backgroundColor: plan.highlight ? 'rgba(124, 58, 237, 0.1)' : '#141414',
-                border: plan.highlight
-                  ? '1px solid rgba(139, 92, 246, 0.4)'
-                  : '1px solid rgba(255,255,255,0.07)',
-                boxShadow: plan.highlight ? '0 0 60px rgba(124, 58, 237, 0.15)' : 'none',
-              }}
-            >
-              {plan.badge && (
-                <div
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs"
-                  style={{
-                    background: 'linear-gradient(135deg, #7c3aed, #c026d3)',
-                    color: '#fff',
-                    fontWeight: 600,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {plan.badge}
-                </div>
-              )}
-
-              <div>
-                <p style={{ color: '#71717a', fontSize: 13, marginBottom: 4 }}>{plan.name}</p>
-                <div className="flex items-end gap-1">
-                  <span
-                    style={{
-                      color: '#ffffff',
-                      fontWeight: 800,
-                      fontSize: 36,
-                      letterSpacing: '-0.03em',
-                      lineHeight: 1,
-                    }}
-                  >
-                    {plan.price}
-                  </span>
-                  <span style={{ color: '#52525b', fontSize: 14, paddingBottom: 4 }}>
-                    {plan.period}
-                  </span>
-                </div>
-                <p style={{ color: '#a78bfa', fontSize: 12, marginTop: 4, fontWeight: 500 }}>
-                  {plan.desc}
-                </p>
-              </div>
-
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full py-3 rounded-xl"
-                style={{
-                  background: plan.highlight
-                    ? 'linear-gradient(135deg, #7c3aed, #c026d3)'
-                    : 'rgba(255,255,255,0.06)',
-                  color: plan.highlight ? '#fff' : '#a1a1aa',
-                  fontWeight: 600,
-                  fontSize: 14,
-                  border: plan.highlight ? 'none' : '1px solid rgba(255,255,255,0.08)',
-                  boxShadow: plan.highlight ? '0 4px 20px rgba(124, 58, 237, 0.35)' : 'none',
-                }}
-              >
-                Assinar agora
-              </motion.button>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Features grid */}
-        <div className="w-full">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="text-center mb-8"
-            style={{ color: '#ffffff', fontWeight: 700, fontSize: 20, letterSpacing: '-0.02em' }}
-          >
-            O que você desbloqueia
-          </motion.h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {features.map((f, i) => (
-              <motion.div
-                key={f.title}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + i * 0.08, duration: 0.4 }}
-                className="flex gap-4 p-5 rounded-2xl"
-                style={{
-                  backgroundColor: '#141414',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                }}
-              >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: 'rgba(124, 58, 237, 0.15)' }}
-                >
-                  <f.icon size={18} style={{ color: '#a78bfa' }} />
-                </div>
-                <div>
-                  <p style={{ color: '#ffffff', fontWeight: 600, fontSize: 14, marginBottom: 4 }}>
-                    {f.title}
-                  </p>
-                  <p style={{ color: '#52525b', fontSize: 13, lineHeight: 1.6 }}>{f.desc}</p>
-                </div>
-              </motion.div>
-            ))}
+        {/* Card Pix */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="flex flex-col items-center gap-5 rounded-3xl p-8 w-full"
+          style={{
+            maxWidth: 380,
+            backgroundColor: '#141414',
+            border: '1px solid rgba(249, 115, 22, 0.2)',
+            boxShadow: '0 0 60px rgba(249, 115, 22, 0.08)',
+          }}
+        >
+          {/* Inter logo text */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ color: '#f97316', fontWeight: 800, fontSize: 20, letterSpacing: '-0.02em' }}>
+              ✦ inter
+            </span>
           </div>
-        </div>
+
+          <div className="flex flex-col items-center gap-1">
+            <p style={{ color: '#ffffff', fontWeight: 800, fontSize: 22, letterSpacing: '-0.02em' }}>
+              Pix
+            </p>
+            <p style={{ color: '#52525b', fontSize: 12 }}>Informe o valor quando for pagar</p>
+          </div>
+
+          {/* QR Code */}
+          <div
+            style={{
+              background: '#fff',
+              borderRadius: 16,
+              padding: 14,
+              width: 200,
+              height: 200,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <div ref={qrRef} />
+          </div>
+
+          {/* Divider */}
+          <div style={{ width: '100%', height: 1, background: 'rgba(255,255,255,0.06)' }} />
+
+          {/* Info */}
+          <div className="w-full flex flex-col gap-3">
+            <div className="flex justify-between items-center">
+              <span style={{ color: '#52525b', fontSize: 13 }}>Nome</span>
+              <span style={{ color: '#ffffff', fontWeight: 600, fontSize: 13 }}>
+                JOAO ALVES GOMES
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span style={{ color: '#52525b', fontSize: 13 }}>Chave Pix</span>
+              <span style={{ color: '#ffffff', fontWeight: 600, fontSize: 13 }}>
+                (75) 99184-1847
+              </span>
+            </div>
+          </div>
+
+          {/* Copy button */}
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={copyKey}
+            className="w-full py-3 rounded-xl flex items-center justify-center gap-2"
+            style={{
+              background: 'linear-gradient(135deg, #ea580c, #f97316)',
+              color: '#fff',
+              fontWeight: 600,
+              fontSize: 14,
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 20px rgba(249, 115, 22, 0.3)',
+            }}
+          >
+            {copied ? <Check size={15} /> : <Copy size={15} />}
+            {copied ? 'Chave copiada!' : 'Copiar chave Pix'}
+          </motion.button>
+        </motion.div>
 
         {/* Guarantee */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 0.6 }}
           className="flex items-center gap-2"
           style={{ color: '#3f3f46', fontSize: 12 }}
         >
           <Check size={13} style={{ color: '#22c55e' }} />
-          <span>Cancele quando quiser · Sem compromisso · Garantia de 7 dias</span>
+          <span>100% seguro · Qualquer valor é bem-vindo · Obrigado!</span>
         </motion.div>
       </div>
     </main>

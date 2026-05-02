@@ -19,7 +19,7 @@ export function Home() {
   const [duration, setDuration] = useState<Duration>('qualquer');
 
   const handleSearch = () => {
-    const selectedMood: Mood = mood || 'leve';
+    const selectedMood = mood || 'indiferente';
     navigate('/resultados', {
       state: { query, mood: selectedMood, context, duration },
     });

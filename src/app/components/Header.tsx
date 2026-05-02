@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { Film, Menu, X, Sparkles } from 'lucide-react';
+import { Menu, X, Sparkles } from 'lucide-react';
 
 export function Header() {
   const location = useLocation();
@@ -31,9 +31,13 @@ export function Header() {
           <motion.div
             whileHover={{ rotate: 15, scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            style={{ color: '#a78bfa' }}
+            className="h-8 w-8 overflow-hidden rounded-lg"
           >
-            <Film size={22} />
+            <img
+              src="/logo.png"
+              alt="Quero Assistir"
+              className="h-full w-full object-cover"
+            />
           </motion.div>
           <span
             className="text-lg tracking-tight select-none"
@@ -45,7 +49,7 @@ export function Header() {
               backgroundClip: 'text',
             }}
           >
-            QueroAssistir
+            Quero Assistir
           </span>
         </Link>
 

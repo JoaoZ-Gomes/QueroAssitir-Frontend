@@ -13,6 +13,7 @@ export interface Movie {
   durationMinutes: number;
   year: number;
   director: string;
+  platforms: string[];
 }
 
 export interface RecommendationResult {

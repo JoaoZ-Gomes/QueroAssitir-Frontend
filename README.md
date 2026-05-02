@@ -1,7 +1,7 @@
 
-  # Movie Recommendation Platform UI
+  # Quero Assistir
 
-  This is a code bundle for Movie Recommendation Platform UI. The original project is available at https://www.figma.com/design/WXG1OtUhGLMfZYPybGduAX/Movie-Recommendation-Platform-UI.
+  This is a code bundle for Quero Assistir. The original project is available at https://www.figma.com/design/WXG1OtUhGLMfZYPybGduAX/Movie-Recommendation-Platform-UI.
 
   ## Running the code
 
