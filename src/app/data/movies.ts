@@ -231,6 +231,9 @@ const recommendationMap: RecommendationMap = {
   caotico: { solo: 'escapada', group: 'caos', altIds: ['labirinto', 'horizonte', 'guardiao'] },
 };
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'https://queroassitir-backend.onrender.com';
+
 function getMovieById(id: string): Movie {
   return movies.find((m) => m.id === id) || movies[0];
 }
@@ -242,7 +245,7 @@ export async function getRecommendation(
   query: string
 ): Promise<RecommendationResult> {
   try {
-    const response = await fetch('http://localhost:8080/api/recommendations', {
+    const response = await fetch(`${API_BASE_URL}/api/recommendations`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
