@@ -2,7 +2,7 @@ import type { Mood, Context, Duration, RecommendationResult, HistoryItem, Movie 
 import { ApiResponse, ApiError, ValidationError, TimeoutError, NetworkError } from '../types/api';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://queroassitir-backend.onrender.com';
-const REQUEST_TIMEOUT = 30000; // 30 segundos
+const REQUEST_TIMEOUT = 90000; // 90 segundos (necessário para APIs de IA e Render Free)
 
 class ApiClient {
   private baseUrl: string;
