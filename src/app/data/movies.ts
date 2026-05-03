@@ -1,4 +1,4 @@
-export type Mood = 'leve' | 'emocional' | 'intenso' | 'divertido' | 'nostalgico' | 'tenso' | 'inspirado' | 'caotico';
+export type Mood = 'leve' | 'emocional' | 'intenso' | 'divertido' | 'nostalgico' | 'tenso' | 'inspirado' | 'caotico' | 'indiferente';
 export type Context = 'sozinho' | 'amigos';
 export type Duration = 'curto' | 'longo' | 'qualquer';
 
@@ -64,6 +64,7 @@ export const movies: Movie[] = [
     durationMinutes: 112,
     year: 2022,
     director: 'Valentina Cortes',
+    platforms: [],
   },
   {
     id: 'ultima-memoria',
@@ -77,6 +78,7 @@ export const movies: Movie[] = [
     durationMinutes: 125,
     year: 2021,
     director: 'Ana Carvalho',
+    platforms: [],
   },
   {
     id: 'sombras',
@@ -90,6 +92,7 @@ export const movies: Movie[] = [
     durationMinutes: 130,
     year: 2023,
     director: 'Marcus Oliveira',
+    platforms: [],
   },
   {
     id: 'labirinto',
@@ -103,6 +106,7 @@ export const movies: Movie[] = [
     durationMinutes: 138,
     year: 2022,
     director: 'Roberto Farias',
+    platforms: [],
   },
   {
     id: 'horizonte',
@@ -116,6 +120,7 @@ export const movies: Movie[] = [
     durationMinutes: 155,
     year: 2023,
     director: 'Felipe Santos',
+    platforms: [],
   },
   {
     id: 'caos',
@@ -129,6 +134,7 @@ export const movies: Movie[] = [
     durationMinutes: 102,
     year: 2022,
     director: 'Camila Rocha',
+    platforms: [],
   },
   {
     id: 'escapada',
@@ -142,6 +148,7 @@ export const movies: Movie[] = [
     durationMinutes: 115,
     year: 2023,
     director: 'Diego Mendes',
+    platforms: [],
   },
 ];
 
@@ -155,6 +162,7 @@ const matchReasons: Record<string, Record<Mood, string>> = {
     tenso: 'A incerteza entre o sonho e a realidade cria uma tensão constante sobre o que é real. Hipnotizante.',
     inspirado: 'Um lembrete poderoso de que nossa imaginação não tem limites. Ideal para reacender sua faísca criativa.',
     caotico: 'A mistura de mundos oníricos cria uma experiência visual vibrante e imprevisível.',
+    indiferente: 'Uma obra-prima visual que agrada a qualquer espectador em busca de uma história inteligente e envolvente.',
   },
   'ultima-memoria': {
     leve: 'Uma história que vai te fazer pensar, mas também sorrir — especialmente nas cenas de romance e conexão humana.',
@@ -165,6 +173,7 @@ const matchReasons: Record<string, Record<Mood, string>> = {
     tenso: 'O medo de perder a própria identidade cria um suspense psicológico que prende do início ao fim.',
     inspirado: 'Uma obra que nos faz valorizar cada pequena lembrança e conexão que temos na vida.',
     caotico: 'A fragmentação das memórias da protagonista cria um ritmo narrativo único e desafiador.',
+    indiferente: 'Um drama sensível e universal sobre a importância das nossas conexões e lembranças.',
   },
   sombras: {
     leve: 'Mesmo com seu tema sério, há uma serenidade contemplativa que transforma este filme em uma experiência meditativa.',
@@ -175,6 +184,7 @@ const matchReasons: Record<string, Record<Mood, string>> = {
     tenso: 'Um suspense ético onde cada escolha do fotógrafo pode ter consequências fatais. Altamente tenso.',
     inspirado: 'A busca pela verdade, custe o que custar, é um chamado à coragem e integridade.',
     caotico: 'O caos da guerra é retratado de forma visceral, desconstruindo qualquer senso de ordem.',
+    indiferente: 'Um registro poderoso e necessário que prende a atenção pela sua crueza e verdade.',
   },
   labirinto: {
     leve: 'Mesmo sendo um thriller, tem um ritmo hipnótico que te envolve sem sobrecarregar. Uma experiência elegante.',
@@ -185,6 +195,7 @@ const matchReasons: Record<string, Record<Mood, string>> = {
     tenso: 'Um jogo de gato e rato onde você nunca sabe quem é o predador. Tensão em estado puro.',
     inspirado: 'A dedicação incansável à resolução do mistério é um exemplo de foco e determinação.',
     caotico: 'A trama se desenrola em um labirinto de pistas falsas e reviravoltas que desafiam a lógica.',
+    indiferente: 'O suspense perfeito para quem busca uma trama bem amarrada e cheia de mistérios.',
   },
   horizonte: {
     leve: 'A escala do universo neste filme é tão majestosa que transforma qualquer problema cotidiano em pó. Libertador.',
@@ -195,6 +206,7 @@ const matchReasons: Record<string, Record<Mood, string>> = {
     tenso: 'O isolamento no espaço profundo cria uma atmosfera de claustrofobia e perigo iminente.',
     inspirado: 'Nos faz olhar para as estrelas e acreditar no potencial infinito da exploração humana.',
     caotico: 'Batalhas espaciais e anomalias cósmicas criam um espetáculo de ação e caos visual.',
+    indiferente: 'Uma ficção científica épica que nos faz refletir sobre o nosso lugar no vasto universo.',
   },
   caos: {
     leve: 'Exatamente o que o médico receitou: humor leve, coração quente e histórias que te fazem rir de verdade. Perfeito.',
@@ -205,6 +217,7 @@ const matchReasons: Record<string, Record<Mood, string>> = {
     tenso: 'A sucessão de erros e mal-entendidos cria uma ansiedade cômica que é impossível de ignorar.',
     inspirado: 'Celebra a ideia de que, mesmo no meio do caos, o que importa são as pessoas ao nosso redor.',
     caotico: 'O título diz tudo: uma sucessão de eventos absurdos que transformam tudo em uma grande confusão divertida.',
+    indiferente: 'Uma comédia despretensiosa e genuinamente engraçada para relaxar em qualquer momento.',
   },
   escapada: {
     leve: 'Adrenalina pura embalada num pacote leve e divertido. Ação sem o peso usual do gênero. Fácil de amar.',
@@ -215,6 +228,18 @@ const matchReasons: Record<string, Record<Mood, string>> = {
     tenso: 'Cada fuga é um exercício de sobrevivência que mantém o coração acelerado.',
     inspirado: 'A jornada de redenção do protagonista mostra que nunca é tarde para consertar erros do passado.',
     caotico: 'Perseguições alucinantes e explosões fazem deste filme uma descarga de energia pura e caótica.',
+    indiferente: 'Ação de alta qualidade com um herói carismático, ideal para entretenimento puro.',
+  },
+  indiferente: {
+    leve: 'Uma escolha equilibrada que agrada a todos os gostos, ideal para quando você só quer um bom filme.',
+    emocional: 'Uma jornada humana universal que ressoa em qualquer estado de espírito.',
+    intenso: 'Impactante o suficiente para prender sua atenção sem exigir demais emocionalmente.',
+    divertido: 'Diversão garantida com uma história bem contada e personagens carismáticos.',
+    nostalgico: 'Aquele sentimento de "clássico instantâneo" que aquece o coração.',
+    tenso: 'Um suspense inteligente que mantém o interesse do início ao fim.',
+    inspirado: 'Uma obra que celebra a vida e as possibilidades, perfeita para qualquer momento.',
+    caotico: 'Uma mistura vibrante de elementos que surpreende a cada cena.',
+    indiferente: 'Um filme sólido e bem avaliado, excelente escolha para qualquer ocasião.',
   },
 };
 
@@ -229,10 +254,11 @@ const recommendationMap: RecommendationMap = {
   tenso: { solo: 'labirinto', group: 'sombras', altIds: ['horizonte', 'escapada', 'ultima-memoria'] },
   inspirado: { solo: 'horizonte', group: 'guardiao', altIds: ['ultima-memoria', 'escapada', 'caos'] },
   caotico: { solo: 'escapada', group: 'caos', altIds: ['labirinto', 'horizonte', 'guardiao'] },
+  indiferente: { solo: 'horizonte', group: 'caos', altIds: ['guardiao', 'ultima-memoria', 'labirinto'] },
 };
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || 'https://queroassitir-backend.onrender.com';
+import { apiClient } from '../services/api';
+import { ApiError, TimeoutError, NetworkError, ValidationError } from '../types/api';
 
 function getMovieById(id: string): Movie {
   return movies.find((m) => m.id === id) || movies[0];
@@ -245,22 +271,20 @@ export async function getRecommendation(
   query: string
 ): Promise<RecommendationResult> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/recommendations`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ mood, context, duration, query }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Erro na API: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data as RecommendationResult;
+    const history = await getHistory();
+    const excludedMovieIds = history.map((h) => h.movie.id);
+    return await apiClient.getRecommendation(mood, context, duration, query, excludedMovieIds);
   } catch (error) {
     console.error("Falha ao buscar recomendação. Usando fallback local.", error);
+    
+    // Log detalhado do tipo de erro
+    if (error instanceof ValidationError) {
+      console.error("Erro de validação:", error.validationErrors);
+    } else if (error instanceof TimeoutError) {
+      console.error("Requisição expirou após 30 segundos");
+    } else if (error instanceof NetworkError) {
+      console.error("Erro de conexão:", error.message);
+    }
     
     // Fallback local caso o backend esteja desligado ou dê erro
     const map = recommendationMap[mood];
@@ -297,23 +321,58 @@ export async function getRecommendation(
   }
 }
 
-export function saveToHistory(item: HistoryItem) {
-  const history = getHistory();
-  const updated = [item, ...history].slice(0, 20);
-  localStorage.setItem('qaerosistir_history', JSON.stringify(updated));
-}
-
-export function getHistory(): HistoryItem[] {
+export async function saveToHistory(item: HistoryItem) {
   try {
-    const raw = localStorage.getItem('qaerosistir_history');
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
+    // Tenta salvar no backend
+    await apiClient.saveHistoryItem({
+      query: item.query,
+      mood: item.mood,
+      context: item.context,
+      duration: item.duration,
+      timestamp: item.timestamp,
+      movie: item.movie,
+    });
+    console.log("Histórico salvo com sucesso no backend");
+  } catch (error) {
+    console.error("Erro ao salvar histórico no backend:", error);
+    // Fallback para localStorage
+    try {
+      const history = await getHistory();
+      const updated = [item, ...history].slice(0, 20);
+      localStorage.setItem('qaerosistir_history', JSON.stringify(updated));
+    } catch {
+      // Se getHistory também falhar, salva só o item atual
+      localStorage.setItem('qaerosistir_history', JSON.stringify([item]));
+    }
   }
 }
 
-export function clearHistory() {
-  localStorage.removeItem('qaerosistir_history');
+export async function getHistory(): Promise<HistoryItem[]> {
+  try {
+    // Tenta recuperar do backend
+    return await apiClient.getHistory();
+  } catch (error) {
+    console.error("Erro ao recuperar histórico do backend:", error);
+    // Fallback para localStorage
+    try {
+      const raw = localStorage.getItem('qaerosistir_history');
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  }
+}
+
+export async function clearHistory() {
+  try {
+    // Tenta limpar no backend
+    await apiClient.clearHistory();
+    console.log("Histórico limpo com sucesso no backend");
+  } catch (error) {
+    console.error("Erro ao limpar histórico no backend:", error);
+    // Fallback para localStorage
+    localStorage.removeItem('qaerosistir_history');
+  }
 }
 
 export const moodConfig: Record<Mood, { label: string; emoji: string; color: string; bgColor: string; borderColor: string; activeBg: string }> = {
@@ -380,5 +439,13 @@ export const moodConfig: Record<Mood, { label: string; emoji: string; color: str
     bgColor: 'bg-indigo-500/10',
     borderColor: 'border-indigo-500/30',
     activeBg: 'bg-indigo-500/25',
+  },
+  indiferente: {
+    label: 'Indiferente',
+    emoji: '😐',
+    color: 'text-gray-300',
+    bgColor: 'bg-gray-500/10',
+    borderColor: 'border-gray-500/30',
+    activeBg: 'bg-gray-500/25',
   },
 };

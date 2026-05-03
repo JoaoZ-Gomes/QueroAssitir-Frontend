@@ -386,21 +386,31 @@ export function Results() {
         const rec = await getRecommendation(state!.mood, state!.context, state!.duration, state!.query);
         
         if (isMounted) {
+          console.log("[DEBUG] Recomendação recebida:", rec);
+          
+          // Garantir que matchReason exista no objeto
+          if (rec && !rec.matchReason) {
+            rec.matchReason = "Selecionado com base no seu perfil e humor.";
+          }
+
           setResult(rec);
           setLoading(false);
-          saveToHistory({
-            id: Date.now().toString(),
-            query: state!.query,
-            mood: state!.mood,
-            context: state!.context,
-            duration: state!.duration,
-            timestamp: Date.now(),
-            movie: {
-              id: rec.primary.id,
-              title: rec.primary.title,
-              image: rec.primary.image,
-            },
-          });
+          
+          if (rec && rec.primary) {
+            saveToHistory({
+              id: Date.now().toString(),
+              query: state!.query,
+              mood: state!.mood,
+              context: state!.context,
+              duration: state!.duration,
+              timestamp: Date.now(),
+              movie: {
+                id: rec.primary.id,
+                title: rec.primary.title,
+                image: rec.primary.image,
+              },
+            });
+          }
         }
       } catch (error) {
         if (isMounted) {

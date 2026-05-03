@@ -69,11 +69,20 @@ export function History() {
   const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
-    setHistory(getHistory());
+    async function loadHistory() {
+      try {
+        const data = await getHistory();
+        setHistory(data);
+      } catch (error) {
+        console.error('Erro ao carregar histórico:', error);
+        setHistory([]);
+      }
+    }
+    loadHistory();
   }, []);
 
-  const handleClear = () => {
-    clearHistory();
+  const handleClear = async () => {
+    await clearHistory();
     setHistory([]);
     setShowConfirm(false);
   };
