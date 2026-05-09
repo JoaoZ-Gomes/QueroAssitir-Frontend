@@ -370,7 +370,12 @@ function ErrorScreen({ error, onRetry }: { error: string; onRetry: () => void })
   );
 }
 
-
+function AnalyzingScreen() {
+  return (
+    <div
+      className="min-h-screen flex flex-col items-center justify-center px-4"
+      style={{ backgroundColor: '#0f0f0f' }}
+    >
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -435,6 +440,7 @@ export function Results() {
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [showWatchModal, setShowWatchModal] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const state = location.state as {
     query: string;
@@ -510,7 +516,7 @@ export function Results() {
     return () => {
       isMounted = false;
     };
-  }, [state, navigate]);
+  }, [state, navigate, retryCount]);
 
   if (!state) return null;
 
@@ -537,7 +543,7 @@ export function Results() {
                 setError(null);
                 setLoading(true);
                 setResult(null);
-                const rec = getRecommendation(state!.mood, state!.context, state!.duration, state!.query);
+                setRetryCount((prev) => prev + 1);
               }}
             />
           </motion.div>
