@@ -246,15 +246,15 @@ const matchReasons: Record<string, Record<Mood, string>> = {
 type RecommendationMap = Record<Mood, { solo: string; group: string; altIds: string[] }>;
 
 const recommendationMap: RecommendationMap = {
-  leve: { solo: 'guardiao', group: 'caos', altIds: ['ultima-memoria', 'horizonte', 'escapada'] },
-  emocional: { solo: 'ultima-memoria', group: 'sombras', altIds: ['guardiao', 'labirinto', 'sombras'] },
-  intenso: { solo: 'labirinto', group: 'horizonte', altIds: ['sombras', 'escapada', 'ultima-memoria'] },
-  divertido: { solo: 'caos', group: 'escapada', altIds: ['guardiao', 'horizonte', 'caos'] },
-  nostalgico: { solo: 'ultima-memoria', group: 'guardiao', altIds: ['sombras', 'caos', 'labirinto'] },
-  tenso: { solo: 'labirinto', group: 'sombras', altIds: ['horizonte', 'escapada', 'ultima-memoria'] },
-  inspirado: { solo: 'horizonte', group: 'guardiao', altIds: ['ultima-memoria', 'escapada', 'caos'] },
-  caotico: { solo: 'escapada', group: 'caos', altIds: ['labirinto', 'horizonte', 'guardiao'] },
-  indiferente: { solo: 'horizonte', group: 'caos', altIds: ['guardiao', 'ultima-memoria', 'labirinto'] },
+  leve: { solo: 'guardiao', group: 'caos', altIds: ['ultima-memoria', 'horizonte', 'escapada', 'sombras', 'labirinto'] },
+  emocional: { solo: 'ultima-memoria', group: 'sombras', altIds: ['guardiao', 'labirinto', 'sombras', 'horizonte', 'caos'] },
+  intenso: { solo: 'labirinto', group: 'horizonte', altIds: ['sombras', 'escapada', 'ultima-memoria', 'guardiao', 'caos'] },
+  divertido: { solo: 'caos', group: 'escapada', altIds: ['guardiao', 'horizonte', 'caos', 'ultima-memoria', 'sombras'] },
+  nostalgico: { solo: 'ultima-memoria', group: 'guardiao', altIds: ['sombras', 'caos', 'labirinto', 'horizonte', 'escapada'] },
+  tenso: { solo: 'labirinto', group: 'sombras', altIds: ['horizonte', 'escapada', 'ultima-memoria', 'guardiao', 'caos'] },
+  inspirado: { solo: 'horizonte', group: 'guardiao', altIds: ['ultima-memoria', 'escapada', 'caos', 'sombras', 'labirinto'] },
+  caotico: { solo: 'escapada', group: 'caos', altIds: ['labirinto', 'horizonte', 'guardiao', 'ultima-memoria', 'sombras'] },
+  indiferente: { solo: 'horizonte', group: 'caos', altIds: ['guardiao', 'ultima-memoria', 'labirinto', 'escapada', 'sombras'] },
 };
 
 import { apiClient } from '../services/api';
@@ -306,7 +306,7 @@ export async function getRecommendation(
     const alternatives = map.altIds
       .filter((id) => id !== primaryId)
       .map(getMovieById)
-      .slice(0, 3);
+      .slice(0, 5);
 
     return {
       primary,
