@@ -339,10 +339,10 @@ export async function saveToHistory(item: HistoryItem) {
     try {
       const history = await getHistory();
       const updated = [item, ...history].slice(0, 20);
-      localStorage.setItem('qaerosistir_history', JSON.stringify(updated));
+      localStorage.setItem('queroassistir_history', JSON.stringify(updated));
     } catch {
       // Se getHistory também falhar, salva só o item atual
-      localStorage.setItem('qaerosistir_history', JSON.stringify([item]));
+      localStorage.setItem('queroassistir_history', JSON.stringify([item]));
     }
   }
 }
@@ -355,7 +355,7 @@ export async function getHistory(): Promise<HistoryItem[]> {
     console.error("Erro ao recuperar histórico do backend:", error);
     // Fallback para localStorage
     try {
-      const raw = localStorage.getItem('qaerosistir_history');
+      const raw = localStorage.getItem('queroassistir_history');
       return raw ? JSON.parse(raw) : [];
     } catch {
       return [];
@@ -371,7 +371,7 @@ export async function clearHistory() {
   } catch (error) {
     console.error("Erro ao limpar histórico no backend:", error);
     // Fallback para localStorage
-    localStorage.removeItem('qaerosistir_history');
+    localStorage.removeItem('queroassistir_history');
   }
 }
 

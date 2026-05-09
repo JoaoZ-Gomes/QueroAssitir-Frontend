@@ -1,8 +1,8 @@
 import type { Mood, Context, Duration, RecommendationResult, HistoryItem, Movie } from '../data/movies';
 import { ApiResponse, ApiError, ValidationError, TimeoutError, NetworkError } from '../types/api';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://queroassitir-backend.onrender.com';
-const REQUEST_TIMEOUT = 90000; // 90 segundos (necessário para APIs de IA e Render Free)
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://queroassistir-backend.onrender.com';
+const REQUEST_TIMEOUT = 30000; // 30 segundos
 
 class ApiClient {
   private baseUrl: string;
@@ -28,6 +28,13 @@ class ApiClient {
     const timeoutId = setTimeout(() => controller.abort(), timeout);
 
     try {
+      // Log de requisição
+      const method = options.method || 'GET';
+      console.log(`[API] ${method} ${endpoint}`, {
+        fullUrl: url,
+        body: options.body ? JSON.parse(options.body as string) : undefined,
+      });
+
       const response = await fetch(url, {
         ...options,
         signal: controller.signal,
@@ -47,6 +54,13 @@ class ApiClient {
         data = null;
       }
 
+      // Log de resposta
+      console.log(`[API] Response ${response.status}`, {
+        url: endpoint,
+        status: response.status,
+        data,
+      });
+
       // Se a resposta não foi OK, lançar erro
       if (!response.ok) {
         if (data?.validationErrors) {
@@ -62,6 +76,8 @@ class ApiClient {
       return data as T;
     } catch (error) {
       clearTimeout(timeoutId);
+
+      console.error(`[API] Error on ${endpoint}`, error);
 
       if (error instanceof ApiError) {
         throw error;

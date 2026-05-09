@@ -296,12 +296,81 @@ function WatchProvidersModal({
   );
 }
 
-function AnalyzingScreen() {
+function ErrorScreen({ error, onRetry }: { error: string; onRetry: () => void }) {
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center"
+      className="min-h-screen flex flex-col items-center justify-center px-4"
       style={{ backgroundColor: '#0f0f0f' }}
     >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col items-center gap-6 max-w-md"
+      >
+        <div
+          className="w-16 h-16 rounded-full flex items-center justify-center"
+          style={{
+            background: 'linear-gradient(135deg, #ff4444, #ff8888)',
+            boxShadow: '0 0 40px rgba(255, 68, 68, 0.4)',
+          }}
+        >
+          <X size={32} style={{ color: 'white' }} />
+        </div>
+
+        <div className="flex flex-col items-center gap-3 text-center">
+          <h2 style={{ color: '#ffffff', fontWeight: 700, fontSize: 20 }}>
+            Oops! Algo deu errado
+          </h2>
+          <p style={{ color: '#a1a1aa', fontSize: 14, lineHeight: 1.7 }}>
+            {error}
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-2 w-full">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={onRetry}
+            className="w-full px-4 py-3 rounded-xl"
+            style={{
+              background: 'linear-gradient(135deg, #7c3aed, #c026d3)',
+              color: '#fff',
+              border: 'none',
+              fontWeight: 600,
+              fontSize: 14,
+              cursor: 'pointer',
+            }}
+          >
+            Tentar novamente
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => window.location.href = '/'}
+            className="w-full px-4 py-3 rounded-xl"
+            style={{
+              backgroundColor: 'rgba(255,255,255,0.05)',
+              color: '#71717a',
+              border: '1px solid rgba(255,255,255,0.08)',
+              fontWeight: 500,
+              fontSize: 14,
+              cursor: 'pointer',
+            }}
+          >
+            Voltar para home
+          </motion.button>
+        </div>
+
+        <p style={{ color: '#52525b', fontSize: 12, marginTop: 8 }}>
+          Se o problema persistir, tente mais tarde ou entre em contato com suporte.
+        </p>
+      </motion.div>
+    </div>
+  );
+}
+
+
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -363,6 +432,7 @@ export function Results() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState<RecommendationResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [showWatchModal, setShowWatchModal] = useState(false);
 
@@ -414,7 +484,22 @@ export function Results() {
         }
       } catch (error) {
         if (isMounted) {
-          console.error("Erro no fetch", error);
+          console.error("Erro ao buscar recomendação", error);
+          
+          // Determinar mensagem de erro apropriada
+          let errorMsg = "Não conseguimos carregar a recomendação. Tente novamente mais tarde.";
+          
+          if (error instanceof Error) {
+            if (error.message.includes("timeout") || error.message.includes("Timeout")) {
+              errorMsg = "A requisição expirou. O servidor está demorando muito. Tente novamente.";
+            } else if (error.message.includes("Failed to fetch")) {
+              errorMsg = "Erro de conexão. Verifique sua internet e tente novamente.";
+            } else {
+              errorMsg = error.message;
+            }
+          }
+          
+          setError(errorMsg);
           setLoading(false);
         }
       }
@@ -443,6 +528,18 @@ export function Results() {
         {loading ? (
           <motion.div key="loading" exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
             <AnalyzingScreen />
+          </motion.div>
+        ) : error ? (
+          <motion.div key="error" exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+            <ErrorScreen 
+              error={error} 
+              onRetry={() => {
+                setError(null);
+                setLoading(true);
+                setResult(null);
+                const rec = getRecommendation(state!.mood, state!.context, state!.duration, state!.query);
+              }}
+            />
           </motion.div>
         ) : result ? (
           <motion.main
