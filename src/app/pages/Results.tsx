@@ -47,9 +47,11 @@ function StarRating({ rating }: { rating: number }) {
 function AlternativeCard({
   movie,
   index,
+  onClick,
 }: {
   movie: Movie;
   index: number;
+  onClick: () => void;
 }) {
   return (
     <motion.div
@@ -57,6 +59,7 @@ function AlternativeCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6 + index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -4 }}
+      onClick={onClick}
       className="group relative rounded-2xl overflow-hidden cursor-pointer flex-1 min-w-0"
       style={{
         backgroundColor: '#161616',
@@ -527,6 +530,29 @@ export function Results() {
     };
   }, [state, navigate, retryCount]);
 
+  const handleSelectAlternative = (selectedMovie: Movie) => {
+    if (!result) return;
+    
+    // Encontrar o índice do filme selecionado
+    const selectedIndex = result.alternatives.findIndex(m => m.id === selectedMovie.id);
+    if (selectedIndex === -1) return;
+
+    const newAlternatives = [...result.alternatives];
+    // Colocar o filme principal atual de volta na lista de alternativas
+    newAlternatives[selectedIndex] = result.primary;
+
+    setResult({
+      ...result,
+      primary: selectedMovie,
+      alternatives: newAlternatives,
+      // Ao trocar de filme, usamos um matchReason genérico já que o original era específico
+      matchReason: `Este filme também é uma excelente escolha baseada no seu humor ${moodCfg?.label.toLowerCase()}.`
+    });
+
+    // Scroll suave para o topo para ver o novo filme em destaque
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (!state) return null;
 
   const moodCfg = state ? moodConfig[state.mood] : null;
@@ -848,7 +874,12 @@ export function Results() {
 
                   <div className="flex flex-col sm:flex-row gap-4">
                     {result.alternatives.map((movie, i) => (
-                      <AlternativeCard key={movie.id} movie={movie} index={i} />
+                      <AlternativeCard 
+                        key={movie.id} 
+                        movie={movie} 
+                        index={i} 
+                        onClick={() => handleSelectAlternative(movie)}
+                      />
                     ))}
                   </div>
                 </div>
