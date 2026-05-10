@@ -138,7 +138,10 @@ const PLATFORM_CONFIG: Record<string, { emoji: string; color: string }> = {
   'paramount+': { emoji: '⭐', color: '#0064FF' },
   paramount: { emoji: '⭐', color: '#0064FF' },
   'apple tv+': { emoji: '🍎', color: '#000000' },
+  'apple tv': { emoji: '🍎', color: '#000000' },
   apple: { emoji: '🍎', color: '#000000' },
+  globoplay: { emoji: '🎬', color: '#FF0000' },
+  'google play movies': { emoji: '🎬', color: '#4285F4' },
 };
 
 function WatchProvidersModal({
