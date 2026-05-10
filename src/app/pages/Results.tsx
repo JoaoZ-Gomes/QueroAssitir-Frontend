@@ -464,9 +464,15 @@ export function Results() {
         if (isMounted) {
           console.log("[DEBUG] Recomendação recebida:", rec);
           
-          // Garantir que matchReason exista no objeto
-          if (rec && !rec.matchReason) {
-            rec.matchReason = "Selecionado com base no seu perfil e humor.";
+          // Validar e enriquecer matchReason
+          if (!rec || !rec.matchReason || rec.matchReason.trim().length < 10) {
+            console.warn("[FALLBACK] matchReason inválido ou vazio, usando fallback contextual");
+            
+            // Fallback inteligente baseado no contexto
+            const contextLabel = state!.context === 'amigos' ? 'para assistir com amigos' : 'para uma sessão solo';
+            const moodLabel = state!.mood.charAt(0).toUpperCase() + state!.mood.slice(1);
+            
+            rec.matchReason = `Perfeito para quando você está ${state!.mood} e quer ${contextLabel}. Uma escolha que vai surpreender você.`;
           }
 
           setResult(rec);
@@ -490,7 +496,7 @@ export function Results() {
         }
       } catch (error) {
         if (isMounted) {
-          console.error("Erro ao buscar recomendação", error);
+          console.error("[RECOMMENDATION-ERROR] Erro ao buscar recomendação", error);
           
           // Determinar mensagem de erro apropriada
           let errorMsg = "Não conseguimos carregar a recomendação. Tente novamente mais tarde.";

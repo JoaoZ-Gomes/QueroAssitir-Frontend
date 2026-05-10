@@ -152,113 +152,71 @@ export const movies: Movie[] = [
   },
 ];
 
-const matchReasons: Record<string, Record<Mood, string>> = {
-  guardiao: {
-    leve: 'Para quando você quer escapar da realidade sem peso emocional — este filme é uma janela para um mundo cheio de beleza e esperança. Perfeito para relaxar a mente.',
-    emocional: 'Existe uma profundidade emocional aqui que vai tocar seu coração sem te deixar exausto. Uma jornada que conecta.',
-    intenso: 'Visualmente deslumbrante, com uma narrativa que crescerá em você depois que os créditos rolarem. Uma intensidade silenciosa.',
-    divertido: 'Uma aventura encantadora que diverte sem abrir mão de uma história com alma. Você vai sorrir muito.',
-    nostalgico: 'A estética mágica evoca uma sensação de maravilha que lembra os contos de fadas da infância. Uma nostalgia doce.',
-    tenso: 'A incerteza entre o sonho e a realidade cria uma tensão constante sobre o que é real. Hipnotizante.',
-    inspirado: 'Um lembrete poderoso de que nossa imaginação não tem limites. Ideal para reacender sua faísca criativa.',
-    caotico: 'A mistura de mundos oníricos cria uma experiência visual vibrante e imprevisível.',
-    indiferente: 'Uma obra-prima visual que agrada a qualquer espectador em busca de uma história inteligente e envolvente.',
-  },
-  'ultima-memoria': {
-    leve: 'Uma história que vai te fazer pensar, mas também sorrir — especialmente nas cenas de romance e conexão humana.',
-    emocional: 'Poucos filmes capturam tão bem a dor de perder alguém que ainda está presente. Tenha lenços por perto — você vai precisar.',
-    intenso: 'A tensão narrativa aumenta gradualmente até um terceiro ato devastadoramente belo. Emocionalmente arrebatador.',
-    divertido: 'Tem momentos de leveza genuína que equilibram perfeitamente o peso emocional. Um equilíbrio raro e precioso.',
-    nostalgico: 'Uma reflexão sobre como nossas memórias moldam quem somos. Perfeito para um momento contemplativo.',
-    tenso: 'O medo de perder a própria identidade cria um suspense psicológico que prende do início ao fim.',
-    inspirado: 'Uma obra que nos faz valorizar cada pequena lembrança e conexão que temos na vida.',
-    caotico: 'A fragmentação das memórias da protagonista cria um ritmo narrativo único e desafiador.',
-    indiferente: 'Um drama sensível e universal sobre a importância das nossas conexões e lembranças.',
-  },
-  sombras: {
-    leve: 'Mesmo com seu tema sério, há uma serenidade contemplativa que transforma este filme em uma experiência meditativa.',
-    emocional: 'Uma reflexão profunda sobre culpa, responsabilidade e redenção. Te fará sentir tudo ao mesmo tempo — intensamente.',
-    intenso: 'A tensão moral é constante e perturbadora — exatamente o tipo de filme que fica em sua cabeça por dias. Impactante.',
-    divertido: 'Apesar do tema, tem momentos de ironia e humanidade genuína que aliviam sem diminuir a potência da história.',
-    nostalgico: 'Retrata um tempo e um lugar com uma crueza que parece um registro histórico necessário e marcante.',
-    tenso: 'Um suspense ético onde cada escolha do fotógrafo pode ter consequências fatais. Altamente tenso.',
-    inspirado: 'A busca pela verdade, custe o que custar, é um chamado à coragem e integridade.',
-    caotico: 'O caos da guerra é retratado de forma visceral, desconstruindo qualquer senso de ordem.',
-    indiferente: 'Um registro poderoso e necessário que prende a atenção pela sua crueza e verdade.',
-  },
-  labirinto: {
-    leve: 'Mesmo sendo um thriller, tem um ritmo hipnótico que te envolve sem sobrecarregar. Uma experiência elegante.',
-    emocional: 'A protagonista tem uma jornada emocional devastadora que vai muito além do gênero policial. Tocante e sombrio.',
-    intenso: 'Prepare-se para ficar na beira do sofá do começo ao fim. Um thriller construído com maestria absoluta. Imperdível.',
-    divertido: 'A química entre os personagens tem momentos genuinamente divertidos em meio ao suspense mais tenso.',
-    nostalgico: 'Bebe na fonte dos grandes clássicos do cinema noir, trazendo uma atmosfera clássica e envolvente.',
-    tenso: 'Um jogo de gato e rato onde você nunca sabe quem é o predador. Tensão em estado puro.',
-    inspirado: 'A dedicação incansável à resolução do mistério é um exemplo de foco e determinação.',
-    caotico: 'A trama se desenrola em um labirinto de pistas falsas e reviravoltas que desafiam a lógica.',
-    indiferente: 'O suspense perfeito para quem busca uma trama bem amarrada e cheia de mistérios.',
-  },
-  horizonte: {
-    leve: 'A escala do universo neste filme é tão majestosa que transforma qualquer problema cotidiano em pó. Libertador.',
-    emocional: 'No fundo de toda a ficção científica épica, é uma história profundamente humana sobre fé, sacrifício e amor.',
-    intenso: 'Uma obra-prima técnica e narrativa que vai demandar toda sua atenção — e vai recompensar cada segundo. Extraordinário.',
-    divertido: 'Explosivo, espetacular e com um ritmo que não te deixa respirar. Cinema puro na sua forma mais poderosa.',
-    nostalgico: 'Uma homenagem às grandes epopeias espaciais do passado, com um olhar moderno e grandioso.',
-    tenso: 'O isolamento no espaço profundo cria uma atmosfera de claustrofobia e perigo iminente.',
-    inspirado: 'Nos faz olhar para as estrelas e acreditar no potencial infinito da exploração humana.',
-    caotico: 'Batalhas espaciais e anomalias cósmicas criam um espetáculo de ação e caos visual.',
-    indiferente: 'Uma ficção científica épica que nos faz refletir sobre o nosso lugar no vasto universo.',
-  },
-  caos: {
-    leve: 'Exatamente o que o médico receitou: humor leve, coração quente e histórias que te fazem rir de verdade. Perfeito.',
-    emocional: 'Escondida atrás das gargalhadas, tem uma história sobre amizade que vai te emocionar genuinamente no final.',
-    intenso: 'Para quando você precisa de uma válvula de escape — ri, chora e se diverte sem parar. Uma montanha-russa deliciosa.',
-    divertido: 'A escolha perfeita para rir até doer a barriga com quem você gosta. Impossível não se identificar com o grupo.',
-    nostalgico: 'Lembra aquelas viagens inesquecíveis com amigos que guardamos com carinho na memória.',
-    tenso: 'A sucessão de erros e mal-entendidos cria uma ansiedade cômica que é impossível de ignorar.',
-    inspirado: 'Celebra a ideia de que, mesmo no meio do caos, o que importa são as pessoas ao nosso redor.',
-    caotico: 'O título diz tudo: uma sucessão de eventos absurdos que transformam tudo em uma grande confusão divertida.',
-    indiferente: 'Uma comédia despretensiosa e genuinamente engraçada para relaxar em qualquer momento.',
-  },
-  escapada: {
-    leve: 'Adrenalina pura embalada num pacote leve e divertido. Ação sem o peso usual do gênero. Fácil de amar.',
-    emocional: 'Por baixo de toda a ação explosiva, é uma história comovente sobre uma relação pai-filha cheia de nuances.',
-    intenso: 'Sequências de ação construídas com maestria e um nível de tensão que mantém você completamente grudado.',
-    divertido: 'Impossível não sorrir — a dinâmica cômica funciona perfeitamente e te mantém entretido do início ao fim. Incrível.',
-    nostalgico: 'Traz de volta o espírito dos filmes de ação dos anos 90, com heróis carismáticos e vilões marcantes.',
-    tenso: 'Cada fuga é um exercício de sobrevivência que mantém o coração acelerado.',
-    inspirado: 'A jornada de redenção do protagonista mostra que nunca é tarde para consertar erros do passado.',
-    caotico: 'Perseguições alucinantes e explosões fazem deste filme uma descarga de energia pura e caótica.',
-    indiferente: 'Ação de alta qualidade com um herói carismático, ideal para entretenimento puro.',
-  },
-  indiferente: {
-    leve: 'Uma escolha equilibrada que agrada a todos os gostos, ideal para quando você só quer um bom filme.',
-    emocional: 'Uma jornada humana universal que ressoa em qualquer estado de espírito.',
-    intenso: 'Impactante o suficiente para prender sua atenção sem exigir demais emocionalmente.',
-    divertido: 'Diversão garantida com uma história bem contada e personagens carismáticos.',
-    nostalgico: 'Aquele sentimento de "clássico instantâneo" que aquece o coração.',
-    tenso: 'Um suspense inteligente que mantém o interesse do início ao fim.',
-    inspirado: 'Uma obra que celebra a vida e as possibilidades, perfeita para qualquer momento.',
-    caotico: 'Uma mistura vibrante de elementos que surpreende a cada cena.',
-    indiferente: 'Um filme sólido e bem avaliado, excelente escolha para qualquer ocasião.',
-  },
-};
+/**
+ * DEPRECATED: Tabela de matchReasons hardcoded removida.
+ * 
+ * As explicações agora são geradas DINAMICAMENTE pelo backend usando IA Generativa.
+ * Vantagens:
+ * - Explicações personalizadas e contextualizadas
+ * - Evita respostas genéricas
+ * - Considera mood, contexto, duration, query
+ * - Cada explicação é única
+ * 
+ * Se a API falhar, o fallback automático será usado.
+ */
 
-type RecommendationMap = Record<Mood, { solo: string; group: string; altIds: string[] }>;
-
-const recommendationMap: RecommendationMap = {
-  leve: { solo: 'guardiao', group: 'caos', altIds: ['ultima-memoria', 'horizonte', 'escapada', 'sombras', 'labirinto'] },
-  emocional: { solo: 'ultima-memoria', group: 'sombras', altIds: ['guardiao', 'labirinto', 'sombras', 'horizonte', 'caos'] },
-  intenso: { solo: 'labirinto', group: 'horizonte', altIds: ['sombras', 'escapada', 'ultima-memoria', 'guardiao', 'caos'] },
-  divertido: { solo: 'caos', group: 'escapada', altIds: ['guardiao', 'horizonte', 'caos', 'ultima-memoria', 'sombras'] },
-  nostalgico: { solo: 'ultima-memoria', group: 'guardiao', altIds: ['sombras', 'caos', 'labirinto', 'horizonte', 'escapada'] },
-  tenso: { solo: 'labirinto', group: 'sombras', altIds: ['horizonte', 'escapada', 'ultima-memoria', 'guardiao', 'caos'] },
-  inspirado: { solo: 'horizonte', group: 'guardiao', altIds: ['ultima-memoria', 'escapada', 'caos', 'sombras', 'labirinto'] },
-  caotico: { solo: 'escapada', group: 'caos', altIds: ['labirinto', 'horizonte', 'guardiao', 'ultima-memoria', 'sombras'] },
-  indiferente: { solo: 'horizonte', group: 'caos', altIds: ['guardiao', 'ultima-memoria', 'labirinto', 'escapada', 'sombras'] },
-};
+/**
+ * DEPRECATED: Mapa de recomendações hardcoded removido.
+ * 
+ * O backend agora retorna a recomendação completa com:
+ * - Filme principal selecionado por IA
+ * - Alternativas variadas
+ * - matchReason gerado dinamicamente
+ * 
+ * O fallback local é mantido apenas para emergências (backend offline).
+ */
 
 import { apiClient } from '../services/api';
 import { ApiError, TimeoutError, NetworkError, ValidationError } from '../types/api';
+
+/**
+ * Fallback de alta qualidade para quando o backend está indisponível
+ */
+function generateEmergencyFallback(mood: Mood, context: Context): RecommendationResult {
+  // Pool diversificado de filmes clássicos para fallback
+  const fallbackMovies = {
+    leve: { solo: 'guardiao', group: 'caos' },
+    emocional: { solo: 'ultima-memoria', group: 'sombras' },
+    intenso: { solo: 'labirinto', group: 'horizonte' },
+    divertido: { solo: 'caos', group: 'escapada' },
+    nostalgico: { solo: 'ultima-memoria', group: 'guardiao' },
+    tenso: { solo: 'labirinto', group: 'sombras' },
+    inspirado: { solo: 'horizonte', group: 'guardiao' },
+    caotico: { solo: 'escapada', group: 'caos' },
+    indiferente: { solo: 'horizonte', group: 'caos' },
+  };
+
+  const selectedIds = fallbackMovies[mood] || fallbackMovies.indiferente;
+  const primaryId = context === 'amigos' ? selectedIds.group : selectedIds.solo;
+  
+  // Lista alternativa em caso de fallback
+  const altIds = ['guardiao', 'ultima-memoria', 'labirinto', 'horizonte', 'caos', 'sombras', 'escapada'];
+
+  const primary = getMovieById(primaryId);
+  const alternatives = altIds
+    .filter(id => id !== primaryId)
+    .map(getMovieById)
+    .slice(0, 5);
+
+  return {
+    primary,
+    alternatives,
+    matchReason: `Selecionado com base no seu humor (${mood}) e contexto (${context}). O backend estava indisponível, então esta é uma recomendação baseada em nossos favorites locais.`,
+    mood,
+    query: '',
+    context,
+  };
+}
 
 function getMovieById(id: string): Movie {
   return movies.find((m) => m.id === id) || movies[0];
@@ -275,49 +233,19 @@ export async function getRecommendation(
     const excludedMovieIds = history.map((h) => h.movie.id);
     return await apiClient.getRecommendation(mood, context, duration, query, excludedMovieIds);
   } catch (error) {
-    console.error("Falha ao buscar recomendação. Usando fallback local.", error);
+    console.error("[RECOMMENDATION] Falha ao buscar recomendação da API", error);
     
     // Log detalhado do tipo de erro
     if (error instanceof ValidationError) {
-      console.error("Erro de validação:", error.validationErrors);
+      console.error("[RECOMMENDATION-ERROR] Erro de validação:", error.validationErrors);
     } else if (error instanceof TimeoutError) {
-      console.error("Requisição expirou após 30 segundos");
+      console.error("[RECOMMENDATION-ERROR] Requisição expirou após 30 segundos");
     } else if (error instanceof NetworkError) {
-      console.error("Erro de conexão:", error.message);
+      console.error("[RECOMMENDATION-ERROR] Erro de conexão:", error.message);
     }
     
-    // Fallback local caso o backend esteja desligado ou dê erro
-    const map = recommendationMap[mood];
-    let primaryId = context === 'amigos' ? map.group : map.solo;
-
-    // Duration adjustment
-    const candidate = getMovieById(primaryId);
-    if (duration === 'curto' && candidate.durationMinutes > 115) {
-      const shorter = map.altIds
-        .map(getMovieById)
-        .find((m) => m.durationMinutes <= 115);
-      if (shorter) primaryId = shorter.id;
-    } else if (duration === 'longo' && candidate.durationMinutes < 120) {
-      const longer = map.altIds.map(getMovieById).find((m) => m.durationMinutes >= 120);
-      if (longer) primaryId = longer.id;
-    }
-
-    const primary = getMovieById(primaryId);
-    const alternatives = map.altIds
-      .filter((id) => id !== primaryId)
-      .map(getMovieById)
-      .slice(0, 5);
-
-    return {
-      primary,
-      alternatives,
-      matchReason:
-        matchReasons[primaryId]?.[mood] ||
-        'Este filme foi escolhido especialmente para o seu momento atual.',
-      mood,
-      query,
-      context,
-    };
+    console.warn("[RECOMMENDATION-FALLBACK] Usando fallback de emergência");
+    return generateEmergencyFallback(mood, context);
   }
 }
 
